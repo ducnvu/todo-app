@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setTaskID, setTasks } from '../redux/actions';
 import GlobalStyle from '../utils/GlobalStyle';
+import CheckBox from '@react-native-community/checkbox';
+import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
 
 export default function ToDo({navigation}) {
 
@@ -36,6 +38,20 @@ export default function ToDo({navigation}) {
             .catch(err => console.log(err))
     }
 
+    const checkTask = (id, newValue) => {
+        const index = tasks.findIndex(task => task.ID === id);
+        if (index > -1) {
+            let newTasks = [...tasks];
+            newTasks[index].Done = newValue;
+            AsyncStorage.setItem("Tasks", JSON.stringify(newTasks))
+                .then(() => {
+                    dispatch(setTasks(newTasks));
+                    Alert.alert("Success!", "Task state is changed.");
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
     return (
         <View style={styles.body}>
             <FlatList
@@ -49,6 +65,10 @@ export default function ToDo({navigation}) {
                         }}
                     >
                         <View style={styles.item_row}>
+                            <CheckBox
+                                value={item.Done}
+                                onValueChange={(NewValue) => {checkTask(item.ID, NewValue)}}
+                            />
                             <View style={styles.item_body}>
                                 <Text
                                     style={[

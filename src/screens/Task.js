@@ -5,6 +5,7 @@ import CustomButton from '../utils/CustomButton'
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks } from '../redux/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CheckBox from '@react-native-community/checkbox';
 
 export default function Task({navigation}) {
 
@@ -13,6 +14,7 @@ export default function Task({navigation}) {
     
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
+    const [done, setDone] = useState(false);
 
     useEffect(() => {
         getTask();
@@ -23,6 +25,7 @@ export default function Task({navigation}) {
         if (Task) {
             setTitle(Task.Title);
             setDesc(Task.Desc);
+            setDone(Task.Done);
         }
     }
 
@@ -34,7 +37,8 @@ export default function Task({navigation}) {
                 var Task = {
                     ID: taskID,
                     Title: title,
-                    Desc: desc
+                    Desc: desc,
+                    Done: done,
                 }
                 const index = tasks.findIndex(task => task.ID === taskID);
                 let newTasks = [];
@@ -73,6 +77,15 @@ export default function Task({navigation}) {
             multiline
             onChangeText={(value) => setDesc(value)}
         />
+        <View style={styles.checkbox}>
+            <CheckBox 
+                value={done}
+                onValueChange={(newValue) => setDone(newValue)}
+            />
+            <Text style={styles.text}>
+                Is Done
+            </Text>
+        </View>
         <CustomButton
             title="Save Task"
             color="#1eb900"
@@ -89,6 +102,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 10,
     },
+    checkbox: {
+        flexDirection: "row",
+        margin: 10,
+    },
     input: {
         width: "100%",
         borderWidth: 1,
@@ -99,5 +116,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         margin: 10,
         paddingHorizontal: 10,
+    },
+    text: {
+        fontSize: 20,
+        color: "#000000",
     }
 })

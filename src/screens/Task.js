@@ -36,7 +36,15 @@ export default function Task({navigation}) {
                     Title: title,
                     Desc: desc
                 }
-                let newTasks = [...tasks, Task];
+                const index = tasks.findIndex(task => task.ID === taskID);
+                let newTasks = [];
+                if (index > -1) {
+                    newTasks = [...tasks];
+                    newTasks[index] = Task;
+                } else {
+                    newTasks = [...tasks, Task];
+                }
+
                 AsyncStorage.setItem("Tasks", JSON.stringify(newTasks))
                     .then(() => {
                         dispatch(setTasks(newTasks));

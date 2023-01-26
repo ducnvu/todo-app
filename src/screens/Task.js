@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, Text, View } from 'react-native'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import CustomButton from '../utils/CustomButton'
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,18 @@ export default function Task({navigation}) {
     
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
+
+    useEffect(() => {
+        getTask();
+    }, [])
+
+    const getTask = () => {
+        const Task = tasks.find(task => task.ID === taskID)
+        if (Task) {
+            setTitle(Task.Title);
+            setDesc(Task.Desc);
+        }
+    }
 
     const setTask = () => {
         if (title.length == 0) {

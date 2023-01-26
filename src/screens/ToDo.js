@@ -4,6 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setTaskID, setTasks } from '../redux/actions';
+import GlobalStyle from '../utils/GlobalStyle';
 
 export default function ToDo({navigation}) {
 
@@ -32,15 +33,32 @@ export default function ToDo({navigation}) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.item}
+                        onPress={()=>{
+                            dispatch(setTaskID(item.ID));
+                            navigation.navigate("Task");
+                        }}
                     >
-                        <Text>
+                        <Text
+                            style={[
+                                GlobalStyle.CustomFontHW,
+                                styles.title
+                            ]}
+                            numberOfLines={1}
+                        >
                             {item.Title}
                         </Text>
-                        <Text>
+                        <Text
+                            style={[
+                                GlobalStyle.CustomFontHW,
+                                styles.subtitle
+                            ]}
+                            numberOfLines={1}
+                        >
                             {item.Desc}
                         </Text>
                     </TouchableOpacity>
                 )}
+                keyExtractor={(item, index) => index.toString()}
             />
             <TouchableOpacity
                 style={styles.button}
@@ -83,5 +101,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 10,
         elevation: 5,
+    },
+    title: {
+        color: "#000000",
+        fontSize: 30,
+        margin: 5,
+    },
+    subtitle: {
+        color: "#999999",
+        fontSize: 20,
+        margin: 5,
     }
 })

@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setTaskID, setTasks } from '../redux/actions';
 import GlobalStyle from '../utils/GlobalStyle';
 import CheckBox from '@react-native-community/checkbox';
-import { isSearchBarAvailableForCurrentPlatform } from 'react-native-screens';
+
 
 export default function ToDo({navigation}) {
 
@@ -55,7 +55,7 @@ export default function ToDo({navigation}) {
     return (
         <View style={styles.body}>
             <FlatList
-                data={tasks}
+                data={tasks.filter(task => task.Done === false)}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.item}

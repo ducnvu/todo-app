@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Alert } from 'react-native'
 import React, { useEffect } from 'react'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,16 @@ export default function ToDo({navigation}) {
             .catch(err => console.log(err))
     }
 
+    const deleteTask = (id) => {
+        const filteredTasks = tasks.filter(task => task.ID !== id);
+        AsyncStorage.setItem("Tasks", JSON.stringify(filteredTasks))
+            .then(() => {
+                dispatch(setTasks(filteredTasks));
+                Alert.alert("Success!", "Task removed successfully.");
+            })
+            .catch(err => console.log(err))
+    }
+
     return (
         <View style={styles.body}>
             <FlatList
@@ -38,24 +48,38 @@ export default function ToDo({navigation}) {
                             navigation.navigate("Task");
                         }}
                     >
-                        <Text
-                            style={[
-                                GlobalStyle.CustomFontHW,
-                                styles.title
-                            ]}
-                            numberOfLines={1}
-                        >
-                            {item.Title}
-                        </Text>
-                        <Text
-                            style={[
-                                GlobalStyle.CustomFontHW,
-                                styles.subtitle
-                            ]}
-                            numberOfLines={1}
-                        >
-                            {item.Desc}
-                        </Text>
+                        <View style={styles.item_row}>
+                            <View style={styles.item_body}>
+                                <Text
+                                    style={[
+                                        GlobalStyle.CustomFontHW,
+                                        styles.title
+                                    ]}
+                                    numberOfLines={1}
+                                >
+                                    {item.Title}
+                                </Text>
+                                <Text
+                                    style={[
+                                        GlobalStyle.CustomFontHW,
+                                        styles.subtitle
+                                    ]}
+                                    numberOfLines={1}
+                                >
+                                    {item.Desc}
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                style={styles.delete}
+                                onPress={() => { deleteTask(item.ID) }}
+                            >
+                                <FontAwesome5
+                                    name={"trash"}
+                                    size={25}
+                                    color={"#ff3636"}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => index.toString()}
@@ -92,6 +116,19 @@ const styles = StyleSheet.create({
         bottom: 10,
         right: 10,
         elevation: 5,
+    },
+    item_row: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    item_body: {
+        flex: 1,
+    },
+    delete: {
+        width: 50,
+        height: 50,
+        justifyContent: "center",
+        alignContent: "center",
     },
     item: {
         marginHorizontal: 10,

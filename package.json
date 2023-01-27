@@ -15,6 +15,7 @@
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/stack": "^6.3.11",
+    "deprecated-react-native-prop-types": "^4.0.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-camera": "^4.2.1",

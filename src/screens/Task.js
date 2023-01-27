@@ -196,6 +196,16 @@ export default function Task({navigation}) {
                     color={"#ffffff"}
                 />
             </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.extra_button}
+                onPress={() => {navigation.navigate("Camera", {id: taskID})}}
+            >
+                <FontAwesome5
+                    name={"camera"}
+                    size={25}
+                    color={"#ffffff"}
+                />
+            </TouchableOpacity>
         </View>
         <View style={styles.checkbox}>
             <CheckBox 

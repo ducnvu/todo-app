@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ToDo from "./screens/ToDo";
 import Done from './screens/Done';
 import Task from './screens/Task';
+import Camera from './screens/Camera';
 import Splash from './screens/Splash';
 import { Provider } from 'react-redux';
 import { Store } from './redux/store';
@@ -83,6 +84,10 @@ function App() {
           <RootStack.Screen
             name="Task"
             component={Task}
+          />
+          <RootStack.Screen
+            name="Camera"
+            component={Camera}
           />
         </RootStack.Navigator>
       </NavigationContainer>

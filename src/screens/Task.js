@@ -1,4 +1,4 @@
-import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import CustomButton from '../utils/CustomButton'
@@ -20,6 +20,7 @@ export default function Task({navigation}) {
     const [showBellModal, setShowBellModal] = useState(false);
     const [color, setColor] = useState("white");
     const [bellTime, setBellTime] = useState("1");
+    const [image, setImage] = useState("");
 
     useEffect(() => {
         getTask();
@@ -32,6 +33,7 @@ export default function Task({navigation}) {
             setDesc(Task.Desc);
             setDone(Task.Done);
             setColor(Task.Color);
+            setImage(Task.Image);
         }
     }
 
@@ -45,7 +47,8 @@ export default function Task({navigation}) {
                     Title: title,
                     Desc: desc,
                     Done: done,
-                    Color: color, 
+                    Color: color,
+                    Image: image,
                 }
                 const index = tasks.findIndex(task => task.ID === taskID);
                 let newTasks = [];
@@ -207,6 +210,16 @@ export default function Task({navigation}) {
                 />
             </TouchableOpacity>
         </View>
+        {image?
+            <View>
+                <Image
+                    style={styles.image}
+                    source={{uri: image}}
+                />
+            </View>
+            :
+            null
+        }
         <View style={styles.checkbox}>
             <CheckBox 
                 value={done}
@@ -349,4 +362,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    image: {
+        width: 300,
+        height: 300,
+        margin: 20,
+    }
 })
